@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+</head>
+<body>
+<canvas id="myCanvas" width="500" height="500"></canvas>
+</body>
+<script>
+
+	var canvas = document.getElementById("myCanvas");
+	canvas.onclick = function(){
+		getPixels();
+	}
+	var ctx = canvas.getContext("2d");
+
+	let image = new Image();
+	image.src = "small1.jpg";
+	let pixels = []; //存储像素数据
+	let imageData;
+	image.width = 240;
+	image.height = 180;
+	// 渲染图片，并获取该区域内像素信息
+	image.onload = function() {
+	  ctx.drawImage(
+	    image,
+	    (canvas.width - image.width) / 2,
+	    (canvas.height - image.height) / 2,
+	    image.width,
+	    image.height
+	  );
+	  imageData = ctx.getImageData(
+	    (canvas.width - image.width) / 2,
+	    (canvas.height - image.height) / 2,
+	    image.width,
+	    image.height
+	  ); //获取图表像素信息
+	  //绘制图像
+	};
+
+	function getPixels() {
+	  var pos = 0;
+	  var data = imageData.data; //RGBA的一维数组数据
+	  //源图像的高度和宽度为300px
+	  for (var i = 1; i <= image.width; i++) {
+	    for (var j = 1; j <= image.height; j++) {
+	      pos = [(i - 1) * image.width + (j - 1)] * 4; //取得像素位置
+	      if (data[pos] >= 0) {
+	        var pixel = {
+	          x: (canvas.width - image.width) / 2 + j + Math.random() * 20, //重新设置每个像素的位置信息
+	          y: (canvas.height - image.height) / 2 + i + Math.random() * 20, //重新设置每个像素的位置信息
+	          fillStyle:
+	            "rgba(" +
+	            data[pos] +
+	            "," +
+	            data[pos + 1] +
+	            "," +
+	            data[pos + 2] +
+	            "," +
+	            data[pos + 3] +
+	            ")"
+	        };
+	        pixels.push(pixel);
+	      }
+	    }
+	  }
+	  drawPixels();
+	}
+	function drawPixels() {
+
+	  ctx.clearRect(0, 0, canvas.width, canvas.height);
+	  var len = pixels.length,
+	    curr_pixel = null;
+	  for (var i = 0; i < len; i++) {
+	    curr_pixel = pixels[i];
+	    ctx.fillStyle = curr_pixel.fillStyle;
+	    ctx.fillRect(curr_pixel.x, curr_pixel.y, 1, 1);
+	  }
+	}
+
+	// drawPixels();
+</script>
+</html>
