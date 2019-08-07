@@ -16,7 +16,7 @@
 	var ctx = canvas.getContext("2d");
 
 	let image = new Image();
-	image.src = "small1.jpg";
+	image.src = "./1.jpg";
 	let pixels = []; //存储像素数据
 	let imageData;
 	image.width = 240;
@@ -43,8 +43,8 @@
 	  var pos = 0;
 	  var data = imageData.data; //RGBA的一维数组数据
 	  //源图像的高度和宽度为300px
-	  for (var i = 1; i <= image.width; i++) {
-	    for (var j = 1; j <= image.height; j++) {
+	  for (var i = 1; i <= image.height; i++) {
+	    for (var j = 1; j <= image.width; j++) {
 	      pos = [(i - 1) * image.width + (j - 1)] * 4; //取得像素位置
 	      if (data[pos] >= 0) {
 	        var pixel = {
@@ -78,7 +78,5 @@
 	    ctx.fillRect(curr_pixel.x, curr_pixel.y, 1, 1);
 	  }
 	}
-
-	// drawPixels();
 </script>
 </html>
